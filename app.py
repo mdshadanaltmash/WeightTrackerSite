@@ -1,6 +1,6 @@
 from flask import Flask,render_template,redirect,session,url_for,flash
 from flask_wtf import FlaskForm
-from wtforms import SubmitField,StringField,DecimalField
+from wtforms import SubmitField,StringField,FloatField
 from pymongo import MongoClient
 from datetime import datetime
 
@@ -22,7 +22,7 @@ def saveDetails(name,weight):
     
 class DetailsForm(FlaskForm):
     name=StringField("What is your Name: ")
-    weight=DecimalField("What is your Current weight: ")
+    weight=FloatField("What is your Current weight: ")
     submit=SubmitField('Save')
 
 @app.route('/',methods=['GET','POST'])
@@ -30,7 +30,7 @@ def index():
     form=DetailsForm()
     if form.validate_on_submit():
         name=form.name.data
-        weight=str(form.weight.data)
+        weight=form.weight.data
         saveDetails(name,weight)  #saving details on database
         print(name)
         #flash(f"Hi {name}! Your Data has been saved")
